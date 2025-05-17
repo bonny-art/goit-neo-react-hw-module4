@@ -1,0 +1,63 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  line-height: 1.5;
+
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+*::before,
+*::after {
+  display: block;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: inh erit;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background-color: transparent;
+  cursor: pointer;
+  border-color: transparent;
+  color: currentColor;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+html,
+body {
+  block-size: 100%;
+}
