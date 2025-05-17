@@ -1,0 +1,44 @@
+.fieldWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 16px;
+}
+
+.input {
+  position: relative;
+
+  padding: 10px 56px 10px 16px;
+  font-size: 18px;
+  border: 2px solid #666;
+  border-radius: 5px;
+  background-color: #444;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.input:hover,
+.input:focus {
+  border-color: #fff;
+  outline: none;
+}
+
+.button {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
