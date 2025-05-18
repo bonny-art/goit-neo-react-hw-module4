@@ -1,57 +1,139 @@
-import { useState } from "react";
-import { fetchFromUnsplash } from "./api/unsplash-api";
-import Button from "./components/Button/Button";
+import { useCallback, useState } from "react";
+// import { fetchFromUnsplash } from "./api/unsplash-api";
 import Container from "./components/Container/Container";
 import SearchBar from "./components/SearchBar/SearchBar";
 import Section from "./components/Section/Section";
 import toast from "react-hot-toast";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
+import { useDeviceType } from "./hooks/useDeviceType";
+import { useInfiniteScroll } from "./hooks/useInfiniteScroll";
+import styles from "./App.module.css";
+import { fetchFromPixabay } from "./api/pixabay-api";
+import { BarLoader } from "react-spinners";
+import { hasPixabyMorePages } from "./utils/hasMorePages";
+import clsx from "clsx";
 
 function App() {
   const [images, setImages] = useState([]);
 
-  const loadPhotos = async (query) => {
-    const params = {
-      query,
-      per_page: 12,
-      page: 1,
-    };
-    console.log("🚀 ~ params:", params);
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-    try {
-      console.log("Start search");
-      const data = await fetchFromUnsplash("search/photos", params);
+  const [isLoading, setIsLoading] = useState(false);
 
-      console.log(data);
+  const deviceType = useDeviceType();
 
-      if (data.results.length === 0) {
-        toast.error("No images found for this search.");
-        setImages([]);
-        return;
+  const loadPhotos = useCallback(
+    async (searchQuery = query, pageNumber = 1, append = false) => {
+      const perPage =
+        deviceType === "mobile" ? 6 : deviceType === "tablet" ? 12 : 24;
+
+      const params = {
+        q: searchQuery,
+        per_page: perPage,
+        page: pageNumber,
+      };
+
+      try {
+        setIsLoading(true);
+        // const data = await fetchFromUnsplash("search/photos", params);
+        const data = await fetchFromPixabay(params);
+        console.log("🚀 ~ data:", data);
+
+        // if (data.results.length === 0 && pageNumber === 1) {
+        //   toast.error("No images found for this search.");
+        //   setImages([]);
+        //   return;
+        // }
+        if (data.hits.length === 0 && pageNumber === 1) {
+          toast.error("No images found for this search.");
+          setImages([]);
+          return;
+        }
+
+        setImages((prev) =>
+          // append ? [...prev, ...data.results] : data.results
+          append ? [...prev, ...data.hits] : data.hits
+        );
+
+        setHasMore(
+          hasPixabyMorePages({
+            page: pageNumber,
+            perPage,
+            totalHits: data.totalHits,
+          })
+        );
+      } catch (error) {
+        console.error("Something went wrong while fetching images:", error);
+        toast.error(
+          "Something went wrong while loading images. Please try again later."
+        );
+      } finally {
+        setIsLoading(false);
       }
+    },
+    [deviceType, query]
+  );
 
-      setImages(data.results);
-    } catch (error) {
-      console.error("Something went wrong while fetching images:", error);
-      toast.error(
-        "Something went wrong while loading images. Please try again later."
-      );
-    }
+  const handleSearch = (newQuery) => {
+    setQuery(newQuery);
+    setPage(1);
+    loadPhotos(newQuery, 1, false);
   };
+
+  const loadMore = () => {
+    if (!hasMore) return;
+    const nextPage = page + 1;
+    setPage(nextPage);
+    loadPhotos(query, nextPage, true);
+  };
+
+  const sentinelRef = useInfiniteScroll(loadMore, deviceType);
 
   return (
     <>
-      <Section>
+      <section className={clsx(styles.section, styles.searchBar)}>
         <Container>
-          <SearchBar onSubmit={loadPhotos} />
-          {/* <Button type="button" onClick={loadPhotos}>
-            Load
-          </Button> */}
-          <ImageGallery images={images} />
+          <SearchBar onSubmit={handleSearch} />
         </Container>
-      </Section>
+      </section>
+
+      <section className={clsx(styles.section, styles.gallery)}>
+        <Container>
+          <ImageGallery images={images} />
+          {images.length !== 0 && !isLoading && hasMore && (
+            <div ref={sentinelRef} style={{ height: 1 }} />
+          )}
+          {isLoading && (
+            <div className={styles.loaderWrapper}>
+              <BarLoader color="#FFF" width={300} />
+            </div>
+          )}
+        </Container>
+      </section>
     </>
   );
 }
 
 export default App;
+
+// <Section className={"searchBar"}>
+// <Container>
+//   <SearchBar onSubmit={handleSearch} />
+// </Container>
+// </Section>
+
+// <Section className={"gallery"}>
+// <Container>
+//   <ImageGallery images={images} />
+//   {images.length !== 0 && !isLoading && hasMore && (
+//     <div ref={sentinelRef} style={{ height: 1 }} />
+//   )}
+//   {isLoading && (
+//     <div className={styles.loaderWrapper}>
+//       <BarLoader color="#FFF" width={300} />
+//     </div>
+//   )}
+// </Container>
+// </Section>

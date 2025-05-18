@@ -1,1 +1,37 @@
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
 
+.section {
+  padding: 20px 0;
+
+  @media (min-width: 768px) {
+    padding: 40px 0;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 60px 0;
+  }
+}
+
+.searchBar {
+  background-color: #292929;
+  position: fixed;
+  z-index: 2;
+
+  width: 100%;
+}
+
+.gallery {
+  padding-top: 106px;
+
+  @media (min-width: 768px) {
+    padding-top: 166px;
+  }
+
+  @media (min-width: 1440px) {
+    padding-top: 246px;
+  }
+}

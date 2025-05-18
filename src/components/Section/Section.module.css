@@ -9,3 +9,23 @@
     padding: 60px 0;
   }
 }
+
+.searchBar {
+  background-color: #292929;
+  position: fixed;
+  z-index: 2;
+
+  width: 100%;
+}
+
+.gallery {
+  margin-top: 86px;
+
+  @media (min-width: 768px) {
+    margin-top: 126px;
+  }
+
+  @media (min-width: 1440px) {
+    margin-top: 166px;
+  }
+}

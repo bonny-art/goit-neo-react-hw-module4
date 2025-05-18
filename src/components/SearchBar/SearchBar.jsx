@@ -9,7 +9,6 @@ const SearchBar = ({ onSubmit }) => {
     const form = evt.target;
 
     const query = form.elements.query.value.trim().toLowerCase();
-    console.log("🚀 ~ query:", query);
 
     if (!query) {
       toast.error("Please enter something to search for images.");

@@ -15,18 +15,20 @@
 }
 
 .info {
-  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 12px 12px 10px;
   font-size: 14px;
   color: #ccc;
   background-color: #333;
 }
 
-.author {
-  font-family: "Montserrat", sans-serif;
-  color: #fff;
-}
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-.likes {
-  font-family: "Montserrat", sans-serif;
   color: #fff;
 }
