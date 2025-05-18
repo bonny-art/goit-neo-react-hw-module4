@@ -8,7 +8,7 @@ const breakpointColumnsObj = {
   767: 1,
 };
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, onCardClick }) => {
   return (
     <Masonry
       breakpointCols={breakpointColumnsObj}
@@ -16,7 +16,7 @@ const ImageGallery = ({ images }) => {
       columnClassName={styles.masonryColumn}
     >
       {images.map((image) => (
-        <ImageCard key={image.id} image={image} />
+        <ImageCard key={image.id} image={image} onCardClick={onCardClick} />
       ))}
     </Masonry>
   );
