@@ -23,7 +23,7 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const ModalImage = ({ isOpen, onClose, image }) => {
+const ImageModal = ({ isOpen, onClose, image }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} style={customStyles}>
       {image && (
@@ -37,4 +37,4 @@ const ModalImage = ({ isOpen, onClose, image }) => {
   );
 };
 
-export default ModalImage;
+export default ImageModal;

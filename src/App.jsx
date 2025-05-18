@@ -8,7 +8,7 @@ import styles from "./App.module.css";
 import { BarLoader } from "react-spinners";
 import { useImageSearch } from "./hooks/useImageSearch";
 import { useModal } from "./hooks/useModal";
-import ModalImage from "./components/ModalImage/ModalImage";
+import ImageModal from "./components/ImageModal/ImageModal";
 
 function App() {
   const deviceType = useDeviceType();
@@ -45,7 +45,7 @@ function App() {
             </div>
           )}
 
-          <ModalImage isOpen={isOpen} onClose={close} image={currentItem} />
+          <ImageModal isOpen={isOpen} onClose={close} image={currentItem} />
         </Container>
       </Section>
     </>
